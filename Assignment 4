@@ -8,7 +8,7 @@ WITH
                       ON cdt.CUSTOMER_LOGIN = oh.CUSTOMER_LOGIN
             WHERE TRUNC (oh.order_date) > = TRUNC (SYSDATE - 30)
          GROUP BY CLIENT_CODE)
-  SELECT *
+  SELECT client_code , ord_cnt
     FROM cte
    WHERE ord_cnt > 100
 ORDER BY CLIENT_CODE
