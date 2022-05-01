@@ -60,7 +60,8 @@ CREATE TABLE client_DETAILS_TYPE (
 	Last_updated_by VARCHAR2 (50) NOT NULL
 );
 
-1) client_code is the primary key in this table. This table is the look up table for customer company (client).
+1) client_code is the primary key in this table. 
+Table comments This table is the look up table for customer company (client).
 **********************************************************************************
 CREATE TABLE PRODUCT_CODE_TYPE (
 	product_code numbet (2) NOT NULL primary key,
@@ -71,7 +72,8 @@ CREATE TABLE PRODUCT_CODE_TYPE (
 	Last_updated_by VARCHAR2 (50) NOT NULL 
 );
 
-1) Product_code is the primary key for this table. This table stores 6 product codes offered by white label portal product.
+1) Product_code is the primary key for this table. 
+Table comment This table stores 6 product codes offered by white label portal product.
  
  
 
@@ -91,6 +93,8 @@ Last_updated_by VARCHAR2 (50) NOT NULL,
 );
 1) person_id is primary key in this table
 2) address_id is foreign key refrences address table and holds the address id of current address
+
+This table holds the demographic details for whom the credit report is pulled.
 
 
 **************************************************************************************
@@ -121,6 +125,7 @@ unique key is (address_id , person_id)
 person_id is foreign_key to persons table
 
 );
+This table stores address details of the person
 
 ****************************************************************************************
 CREATE TABLE order_history(
@@ -135,6 +140,7 @@ Last_updated_date` DATE NOT NULL,
  
 );
 
+This table stores order history by a customer login
 Order_hist_id is the primary key for this table. this table stores all the orders made by the customer that belong to  a client
 customer_login is foreign key references customer_login  in customer_details table
 product_code is foreign key to product_code_type table
@@ -164,7 +170,7 @@ Last_updated_date DATE NOT NULL,
 primary key (person_id number , acct_no_last_four )
 foreign_key (person_id) references person_id in persons table
 
-This table stores the person financial information to calculate the 
+This table stores the person financial information used for authenticaton
 
 *********************************************************************************************
 create table Person_authentcation_questions_type(
