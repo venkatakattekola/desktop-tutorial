@@ -7,7 +7,7 @@ CREATE TABLE customer_DETAILS (
 	First_name VARCHAR2 (100) NOT NULL ,
 	Middle_name VARCHAR2 (25) ,
 	Last_name VARCHAR2 (100) NOT NULL ,	 
-	Password VARCHAR2(4000) NOT NULL  ,
+	Password VARCHAR2(4000)   ,
 	LAST_PASSWORD_CHG_DATE DATE ,
 	client_code VARCHAR2 (10) NOT NULL,
 	email_address VARCHAR2 (250) NOT NULL,
@@ -173,7 +173,7 @@ foreign_key (person_id) references person_id in persons table
 This table stores the person financial information used for authenticaton
 
 *********************************************************************************************
-create table Person_authentcation_questions_type(
+create table Person_authentication_questions_type(
 
 question_id number not null,
 ques_descr varchar2(4000) not null,
