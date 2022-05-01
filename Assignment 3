@@ -1,0 +1,38 @@
+--Source file is a csv comma delimited file ord_hist.csv
+--place the csv file in a directory accessible to database
+--control file contents
+options (skip 0)
+load data
+infile 'data.csv'
+ into table ORDER_HISTORY
+ truncate
+fields terminated by ","
+optionally enclosed by '"'
+( ORDER_HIST_ID      ,
+  CUSTOMER_LOGIN     ,
+  PRODUCT_CODE        ,
+  PERSON_ID         ,
+  order_date date "MON-DD-YYYY HH:MM:SS"
+)
+-- run below sqlldr command
+ sqlldr 'Portal/password@dev" control='Control.ctl' log='Results.lo
+--************************************************************************
+-- using external tables
+Create directory ext_dir as ‘/home/ora/external’;
+
+Create table order_ext
+(
+ORDER_HIST_ID  varchar2 (4000)    ,
+  CUSTOMER_LOGIN  varchar 2 (4000)   ,
+  PRODUCT_CODE     varchar2 (4000)   ,
+  PERSON_ID      varchar2 (4000)   ,
+  order_date char (21) dat_format date mask "DD-MON-YYYY HH24:MM:SS")
+Organization external  ( type oracle_loader
+Default directory ext_dir
+Access parameters
+( records delimited by newline
+Fields terminated by “,”
+ 
+Location (‘data.csv’))
+PARALLEL 5
+REJECT LIMIT UNLIMITED;
