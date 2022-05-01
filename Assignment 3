@@ -3,7 +3,7 @@
 --control file contents
 options (skip 0)
 load data
-infile 'data.csv'
+infile 'ord_hist.csv'
  into table ORDER_HISTORY
  truncate
 fields terminated by ","
@@ -33,6 +33,6 @@ Access parameters
 ( records delimited by newline
 Fields terminated by “,”
  
-Location (‘data.csv’))
+Location (‘ord_hist.csv’))
 PARALLEL 5
 REJECT LIMIT UNLIMITED;
