@@ -1,7 +1,7 @@
 /* Formatted on 5/1/2022 09:42:07 AM (QP5 v5.336) */
   SELECT TO_CHAR (oh.order_date, 'MON'),
          EXTRACT (YEAR FROM oh.order_date),
-         CLIENT_name,
+         CLIENT_code,
          CREDIT_BUERAU_CODE,
          COUNT (*)     order_cnt,
          SUM (pct.PRODUCT_PRICE) order_tot
@@ -10,7 +10,7 @@
          INNER JOIN customer_details cdt
              ON cdt.CUSTOMER_LOGIN = oh.CUSTOMER_LOGIN
 GROUP BY pct.CREDIT_BUERAU_CODE,
-         cdt.CLIENT_name,
+         cdt.CLIENT_code,
          TO_CHAR (oh.order_date, 'MON'),
          EXTRACT (YEAR FROM oh.order_date)
 ORDER BY cdt.CLIENT_CODE,
