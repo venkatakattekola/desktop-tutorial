@@ -1,0 +1,14 @@
+/* Formatted on 5/1/2022 10:22:07 AM (QP5 v5.336) */
+WITH
+    cte
+    AS
+        (  SELECT CLIENT_CODE, COUNT (*) ord_cnt
+             FROM ORDER_HISTORY oh
+                  INNER JOIN customer_details cdt
+                      ON cdt.CUSTOMER_LOGIN = oh.CUSTOMER_LOGIN
+            WHERE TRUNC (oh.order_date) > = TRUNC (SYSDATE - 30)
+         GROUP BY CLIENT_CODE)
+  SELECT *
+    FROM cte
+   WHERE ord_cnt > 100
+ORDER BY CLIENT_CODE
