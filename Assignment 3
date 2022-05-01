@@ -3,16 +3,21 @@
 --control file contents
 options (skip 0)
 load data
-infile 'ord_hist.csv'
- into table ORDER_HISTORY
- truncate
+infile 'customer_details.csv'
+append into table customer_details
+ 
 fields terminated by ","
 optionally enclosed by '"'
-( ORDER_HIST_ID      ,
-  CUSTOMER_LOGIN     ,
-  PRODUCT_CODE        ,
-  PERSON_ID         ,
-  order_date date "MON-DD-YYYY HH:MM:SS"
+( customer_login ,
+	Suffix  ,
+	First_name ,
+	Middle_name ,
+	Last_name    ,	 
+	Password ,  
+	LAST_PASSWORD_CHG_DATE   date   "DD-MON-YYYY HH24:MM:SS")  ,
+	client_code  ,
+	email_address 
+  
 )
 -- run below sqlldr command
  sqlldr 'Portal/password@dev" control='Control.ctl' log='Results.lo
@@ -20,19 +25,24 @@ optionally enclosed by '"'
 -- using external tables
 Create directory ext_dir as ‘/home/ora/external’;
 
-Create table order_ext
+Create table customer_det_ext
 (
-ORDER_HIST_ID  varchar2 (4000)    ,
-  CUSTOMER_LOGIN  varchar 2 (4000)   ,
-  PRODUCT_CODE     varchar2 (4000)   ,
-  PERSON_ID      varchar2 (4000)   ,
-  order_date char (21) date_format date mask "DD-MON-YYYY HH24:MM:SS")
+customer_login VARCHAR2 (50),
+	Suffix VARCHAR2 (10) ,
+	First_name VARCHAR2 (100) ,
+	Middle_name VARCHAR2 (25) ,
+	Last_name VARCHAR2 (100)   ,	 
+	Password VARCHAR2(4000),  
+	LAST_PASSWORD_CHG_DATE char (21) date_format date mask "DD-MON-YYYY HH24:MM:SS")  ,
+	client_code VARCHAR2 (10) ,
+	email_address VARCHAR2 (250) 
+ )
 Organization external  ( type oracle_loader
 Default directory ext_dir
 Access parameters
 ( records delimited by newline
 Fields terminated by “,”
  
-Location (‘ord_hist.csv’))
-PARALLEL 5
+Location (‘customer_details.csv’))
+
 REJECT LIMIT UNLIMITED;
