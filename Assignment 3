@@ -26,7 +26,7 @@ ORDER_HIST_ID  varchar2 (4000)    ,
   CUSTOMER_LOGIN  varchar 2 (4000)   ,
   PRODUCT_CODE     varchar2 (4000)   ,
   PERSON_ID      varchar2 (4000)   ,
-  order_date char (21) dat_format date mask "DD-MON-YYYY HH24:MM:SS")
+  order_date char (21) date_format date mask "DD-MON-YYYY HH24:MM:SS")
 Organization external  ( type oracle_loader
 Default directory ext_dir
 Access parameters
