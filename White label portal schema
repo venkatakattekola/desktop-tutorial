@@ -51,6 +51,7 @@ Table comments: This table stores old password for the customer
 PRIMARY KEY (`customer_login,password`)
 
 1) customer_login is foreign key references customer_login  in customer_details table
+2) his table stores last 10 passwords for the customer and can be used for validation when a customer changes his password
 *********************************************************************************
 CREATE TABLE client_DETAILS_TYPE (
 	client_code VARCHAR2 (10) NOT NULL primary key,
@@ -84,8 +85,8 @@ person middle_name varchar2 (100) not null,
 person_ssn varchar2 (4000) not null,
 
 address_id number not null,
-`Last_updated_date` DATE NOT NULL,
-`Last_updated_by` VARCHAR2 (50) NOT NULL,
+Last_updated_date DATE NOT NULL,
+Last_updated_by VARCHAR2 (50) NOT NULL,
 
 );
 1) person_id is primary key in this table
@@ -149,15 +150,15 @@ Account_balance number not null,
 
 credit_debit_indicator char(1)  not null,
 Account_active char(1) not null check constraint ('Y','N');
-address1 varchar2 (500)  not null, comment financial_instituion address1,
-address2 varchar2 (500)  null comment financial_instituion address2,
+address1 varchar2 (500)  not null, 
+address2 varchar2 (500)  null,
 city varchar2 (250),
 state varchar2 (250),
 Country varchar2 (100),
 account_start_date date,
 account_end_date date,
-`Last_updated_by` VARCHAR2 (50) NOT NULL,
-`Last_updated_date` DATE NOT NULL,
+Last_updated_by VARCHAR2 (50) NOT NULL,
+Last_updated_date DATE NOT NULL,
 );
 
 primary key (person_id number , acct_no_last_four )
