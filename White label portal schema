@@ -1,7 +1,7 @@
 --Database schema for white label portal
 
 **********************************************************************************
-CREATE TABLE customer_DETAILS (
+CREATE TABLE customer_details (
 	customer_login VARCHAR2 (50) NOT NULL PRIMARY KEY ,
 	Suffix VARCHAR2 (10) ,
 	First_name VARCHAR2 (100) NOT NULL ,
