@@ -1,0 +1,6 @@
+-- Go to session browser in Toad to get the long running query
+-- Run explain path on the wuery and see the cost
+-- check if there are any loops that can be avoidable
+-- check if index scan is used for queries where cardinality is high
+-- gather statistics by do analyze on tables that had mass inerts
+-- Create separate databases for OLTP and OLAP and design OLAP tables by putting frequent using data in one table
