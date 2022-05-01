@@ -1,0 +1,221 @@
+--Database schema for white label portal
+
+**********************************************************************************
+CREATE TABLE customer_DETAILS (
+	customer_login VARCHAR2 (50) NOT NULL PRIMARY KEY ,
+	Suffix VARCHAR2 (10) ,
+	First_name VARCHAR2 (100) NOT NULL ,
+	Middle_name VARCHAR2 (25) ,
+	Last_name VARCHAR2 (100) NOT NULL ,	 
+	Password VARCHAR2(4000) NOT NULL  ,
+	LAST_PASSWORD_CHG_DATE DATE ,
+	client_code VARCHAR2 (10) NOT NULL,
+	email_address VARCHAR2 (250) NOT NULL,
+	Last_updated_date DATE NOT NULL,
+	Last_updated_by VARCHAR2 (50)
+ );
+
+Table comments: This table stores all the customers who has access to the portal
+
+
+1) Last_update_date is sysdate and poulated with a trigger and last updated_by is customer_login of the person updating record.
+2) client_code is foreign key references client_details_type table.
+3) password is encrypyed using dbms_crypto supplied by oracle
+**********************************************************************************
+
+
+CREATE TABLE customer_TOKEN (
+	customer_login VARCHAR2 (50)  NOT NULL   ,
+	TOKEN number NOT NULL,
+	LAST_UPDATE_DATE` DATE NOT NULL
+ );
+Table comments: This table stores the TOKEN that is generated randomly for dual factor authentication. 
+
+1)  customer_login is foreign key references customer_login  in customer_details table
+2) Customer_login and token is the primary key for this table
+
+3) Create A procedure to generate a 9 digit token once a customer is autenthicated with a customer login and password. This procedure also sends the token to email 
+associated with customer login. Also a schedule job is created at the time of token generation to delete the token associated with that user
+
+4) Last_update_date is sysdate and poulated with a trigger
+5)Once the customer logins then the login module deletes the token associated with that user.
+
+*****************************************************************************************
+CREATE TABLE customer_OLD_CREDENTIALS (
+	customer_login  varchar2 (50) NOT NULL  ,
+	Password VARCHAR2 (4000) NOT NULL ,
+	 LAST_UPDATED_DATE   DATE 
+       
+);
+Table comments: This table stores old password for the customer
+PRIMARY KEY (`customer_login,password`)
+
+1) customer_login is foreign key references customer_login  in customer_details table
+*********************************************************************************
+CREATE TABLE client_DETAILS_TYPE (
+	client_code VARCHAR2 (10) NOT NULL primary key,
+	Client_name VARCHAR2 (500) NOT NULL  ,
+	Last_updated_date DATE NOT NULL,
+	Last_updated_by VARCHAR2 (50) NOT NULL
+);
+
+1) client_code is the primary key in this table. This table is the look up table for customer company (client).
+**********************************************************************************
+CREATE TABLE PRODUCT_CODE_TYPE (
+	product_code numbet (2) NOT NULL primary key,
+	product_name VARCHAR2 (500) NOT NULL  ,
+	product_price numeric(12,2) NOT NULL,
+    credit_buerau_name varchar2(50) NOT NULL,
+	Last_updated_date DATE NOT NULL,
+	Last_updated_by VARCHAR2 (50) NOT NULL 
+);
+
+1) Product_code is the primary key for this table. This table stores 6 product codes offered by white label portal product.
+ 
+ 
+
+**************************************************************************************
+create table persons(
+
+person_id number not null,
+person_first_name varchar2 (100) not null,
+person_last_name varchar2 (100) not null,
+person middle_name varchar2 (100) not null,
+person_ssn varchar2 (4000) not null,
+
+address_id number not null,
+`Last_updated_date` DATE NOT NULL,
+`Last_updated_by` VARCHAR2 (50) NOT NULL,
+
+);
+1) person_id is primary key in this table
+2) address_id is foreign key refrences address table and holds the address id of current address
+
+
+**************************************************************************************
+create table person_address(
+address_id number not null,
+person_id number not null,
+address1 varchar2 (500)  not null,
+address2 varchar2 (500)  null,
+city varchar2 (250),
+state varchar2 (250),
+Country varchar2 (100),
+address_start_date date,
+address_end_date date
+cell_Phone_country_code varchar2 (3),
+cell_Area_code number(3),
+cell_phone_number number(7),
+home_Phone_country_code varchar2 (3),
+home_Area_code number(3),
+home_phone_number number(7),
+Home_ext number(4),
+address_indicator char(1) check constraint ('D','F'),
+zip5  varchar2(5)  null,
+zip4 varchar 2(4) null,
+Postal_code varchar2 (10),
+Curr_address char(1) check constraint ('Y', 'N')
+PRIMARY KEY (`address_id`)
+unique key is (address_id , person_id)
+person_id is foreign_key to persons table
+
+);
+
+****************************************************************************************
+CREATE TABLE order_history(
+
+Order_hist_id number not null primary key,
+customer_login  varchar2 (50)NOT NULL
+product_code number not null,
+person_id number not null,
+order_date date not null,
+Last_updated_by VARCHAR2 (50) NOT NULL,
+Last_updated_date` DATE NOT NULL,
+ 
+);
+
+Order_hist_id is the primary key for this table. this table stores all the orders made by the customer that belong to  a client
+customer_login is foreign key references customer_login  in customer_details table
+product_code is foreign key to product_code_type table
+person_id is foreign table references person_id in person_detail table
+*****************************************************************************************
+
+create table person_financial_details (
+
+person_id number not null,
+acct_no_last_four number not null,
+financial_instituion_name not null,
+Account_balance number not null,
+
+credit_debit_indicator char(1)  not null,
+Account_active char(1) not null check constraint ('Y','N');
+address1 varchar2 (500)  not null, comment financial_instituion address1,
+address2 varchar2 (500)  null comment financial_instituion address2,
+city varchar2 (250),
+state varchar2 (250),
+Country varchar2 (100),
+account_start_date date,
+account_end_date date,
+`Last_updated_by` VARCHAR2 (50) NOT NULL,
+`Last_updated_date` DATE NOT NULL,
+);
+
+primary key (person_id number , acct_no_last_four )
+foreign_key (person_id) references person_id in persons table
+
+This table stores the person financial information to calculate the 
+
+*********************************************************************************************
+create table Person_authentcation_questions_type(
+
+question_id number not null,
+ques_descr varchar2(4000) not null,
+Last_updated_by` VARCHAR2 (50) NOT NULL,
+Last_updated_date` DATE NOT NULL
+);
+
+question_id is primary key
+This table storethe user authentication questions
+
+************************************************************************************************
+create table person_authentication_answers (
+person_id number not null,
+question_id number not null,
+Correct_answer varchar2 (250) ,
+Answer_recorded varchar2 (250),
+Right_response char(1),
+Last_updated_by` VARCHAR2 (50) NOT NULL,
+Last_updated_date` DATE NOT NULL
+);
+primary key (person_id number , question_id )
+foreign_key (person_id) references person_id in persons table
+foreign_key (question_id)references person_id in Person_authentcation_questions_type table
+
+Right response is populatedby comparing the correct_answer and answer_recorded after converting them to upper or lower
+************************************************************************************************
+create table Person_credit_score_history (
+person_id number not null,
+credit_score number not null,
+Score_start_date date not null,
+score_end_date not null,
+Last_updated_by` VARCHAR2 (50) NOT NULL,
+Last_updated_date` DATE NOT NULL
+);
+
+Actual Credit score is stored in this table for date ranges
+********************************************************************************************************
+
+create table credit_result (
+credit_result_code varchar2 (50),
+start_credit_score number,
+end_score number,
+Last_updated_by` VARCHAR2 (50) NOT NULL,
+Last_updated_date` DATE NOT NULL)
+;
+
+This table stores the credit score range for "Excellent", 'Very Good', 'Good' , 'Fair', 'BAD' credit result code
+
+
+
+
+
