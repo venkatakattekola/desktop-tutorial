@@ -1,4 +1,4 @@
---Source file is a csv comma delimited file ord_hist.csv
+--Source file is a csv comma delimited file customer_details.csv
 --place the csv file in a directory accessible to database
 --control file contents
 options (skip 0)
